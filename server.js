@@ -4,6 +4,7 @@ const cors = require('cors');
 const { notFoundHandler } = require('./02-errorHandlers/404');
 const { errHandler } = require('./02-errorHandlers/500');
 const userRoutes = require('./00-routes/user.routes');
+const { BearerAuth } = require('./01-middlewares/bearerAuth');
 require('dotenv').config();
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(express.json());
 
 app.use(userRoutes);
 
-app.get('/', (req, res) => {
+app.get('/', BearerAuth, (req, res) => {
   res.send('Main route');
 })
 

@@ -4,12 +4,15 @@ const express = require('express');
 
 const { usersTable } = require('../03-models/index');
 const { checkUser } = require('../01-middlewares/checkUser');
+const base64 = require('base-64');
+const bcrypt = require('bcrypt');
+const { BasicAuth } = require('../01-middlewares/basicAuth');
 const router = express.Router();
 
 
 router.post('/signup', checkUser, handleSignUp);
 
-
+router.post('/signin', BasicAuth, handleSignin);
 
 
 async function handleSignUp(req, res, next) {
@@ -22,5 +25,13 @@ async function handleSignUp(req, res, next) {
   }
 }
 
+async function handleSignin(req, res, next) {
+  try {
+    res.status(200).send(req.user);
+  } catch (e) {
+    next(`inside handleSignin function : ${e}`);
+  }
+}
 
 module.exports = router;
+
